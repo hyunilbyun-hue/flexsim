@@ -5,49 +5,21 @@
 %    복사해서 붙여넣어도 됩니다.
 % =====================================================================
 \documentclass[tikz,border=5pt]{standalone}
+\definecolor{axiscolor}{HTML}{1F6E8C}   % 축 색 (청록색)
+\definecolor{labelcolor}{HTML}{555555}  % 라벨 색 (회색)
 \begin{document}
 
-\begin{tikzpicture}[
-  >=latex,                                   % 화살촉 모양
-  % ---- 축 스타일 -----------------------------------------------------
-  axis/.style={->, line width=0.8pt},
-  % ---- 교차 축 pic:  {xy axes={길이}{x라벨}{y라벨}} -----------------
-  pics/xy axes/.style n args={3}{code={
-    \draw[axis] (-#1,0) -- (#1,0) node[right] {#2};
-    \draw[axis] (0,-#1) -- (0,#1) node[above] {#3};
-    \fill (0,0) circle (1.2pt);
-  }},
-  % ---- 지면에 수직인 축: 나오는 방향(⊙) / 들어가는 방향(⊗) ---------
-  pics/z out/.style={code={
-    \draw[line width=0.6pt] (0,0) circle (1.5mm);
-    \fill (0,0) circle (0.5mm);
-    \node[below left=0.5mm] at (0,0) {#1};
-  }},
-  pics/z in/.style={code={
-    \draw[line width=0.6pt] (0,0) circle (1.5mm);
-    \draw[line width=0.6pt] (-1.06mm,-1.06mm) -- (1.06mm,1.06mm)
-                            (-1.06mm,1.06mm) -- (1.06mm,-1.06mm);
-    \node[below left=0.5mm] at (0,0) {#1};
-  }},
-]
+\begin{tikzpicture}[>=latex, line width=1.2pt]
+  % 축 길이 / 교차점 밖으로 튀어나온 길이
+  \def\xlen{2.4}  \def\ylen{1.6}  \def\tail{0.25}
 
-% ---------------- 예시 단면 (원하는 형상으로 교체) -------------------
-\fill[gray!20] (-2,-0.8) rectangle (2,0.8);          % 단면
-\draw[line width=0.6pt] (-2,-0.8) rectangle (2,0.8);
-\draw[dashed, gray] (-2,0.3) -- (2,0.3)              % 층 경계 예시
-                    (-2,-0.3) -- (2,-0.3);
+  % 축
+  \draw[->, axiscolor] (-\tail,0) -- (\xlen,0);   % x축
+  \draw[->, axiscolor] (0,-\tail) -- (0,\ylen);   % y축
 
-% ---------------- 축 그리기 ------------------------------------------
-% 1) 단면 중심(도심)에 교차 축
-\pic at (0,0) {xy axes={2.6}{$x$}{$y$}};
-
-% 2) 지면 수직 축 표시 (필요 없으면 지우세요)
-\pic at (0,0) {z out={$z$}};
-% \pic at (0,0) {z in={$z$}};
-
-% 3) 회전된 좌표계 예시 (필요 없으면 지우세요)
-% \pic[rotate=30, red] at (3.5,0) {xy axes={1}{$x'$}{$y'$}};
-
+  % 라벨
+  \node[labelcolor, font=\sffamily\Large] at (\xlen-0.6,-0.4) {x};
+  \node[labelcolor, font=\sffamily\Large] at (-0.45,\ylen-0.45) {y};
 \end{tikzpicture}
 
 \end{document}
